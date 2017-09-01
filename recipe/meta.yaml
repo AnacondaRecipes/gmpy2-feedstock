@@ -43,6 +43,11 @@ about:
   license: LGPL 3
   license_file: COPYING.LESSER
   summary: 'GMP/MPIR, MPFR, and MPC interface to Python 2.6+ and 3.x'
+  description: |
+    gmpy2 provides fast multiple-precision arithmetic to Python. gmpy2 is an
+    optimized C extension that supports the GMP, MPFR, and MPC libraries.
+  dev_url: https://github.com/aleaxit/gmpy
+  doc_source_url: https://github.com/aleaxit/gmpy/tree/master/doc
 
 extra:
   recipe-maintainers:
