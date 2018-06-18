@@ -26,9 +26,7 @@ requirements:
     - mpc
     - python
   run:
-    - gmp           # [unix]
     - mpir          # [win]
-    - mpfr 3.*
     - mpc
     - python
 
