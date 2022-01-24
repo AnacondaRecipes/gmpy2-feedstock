@@ -11,7 +11,7 @@ source:
   patches:
     - 0001-Do-not-redefine-isnan-isinf.patch
     - 0002-PySlice_GetIndicesEx-is-a-macro.patch
-
+    - 0003-pyhash_nan.patch   # [py>39]
 build:
   number: 3
   skip: true        # [win and vc<14]
@@ -22,6 +22,8 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
+    - patch  # [not win]
+    - m2-patch  # [win]
   host:
     - gmp           # [unix]
     - mpir          # [win]
