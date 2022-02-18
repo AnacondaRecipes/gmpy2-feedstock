@@ -43,7 +43,7 @@ test:
   commands:
     - pip check
   downstreams:
-    - mpmath
+  # Additional testing with a downstream package sympy
     - sympy
 
 about:
