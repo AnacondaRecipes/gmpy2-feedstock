@@ -1,23 +1,20 @@
-{% set version = "2.0.8" %}
+{% set name = "gmpy2" %}
+{% set version = "2.1.2" %}
 
 package:
-  name: gmpy2
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  fn: gmpy2-{{version}}.zip
-  url: https://pypi.io/packages/source/g/gmpy2/gmpy2-{{ version }}.zip
-  sha256: dd233e3288b90f21b0bb384bcc7a7e73557bb112ccf0032ad52aa614eb373d3f
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/gmpy2-{{ version }}.tar.gz
+  sha256: da75140bca128ece795895477e53b43773e3748aa90ba6170eae7ca2c74b82d1
   patches:
-    - 0001-Do-not-redefine-isnan-isinf.patch
-    - 0002-PySlice_GetIndicesEx-is-a-macro.patch
-    - 0003-pyhash_nan.patch   # [py>39]
+    - win_setup.diff
+
 build:
-  number: 3
-  skip: true        # [win and vc<14]
-  script:
-    - python setup.py install --shared=$PREFIX                                          # [unix]
-    - python setup.py build_ext -f --shared=%LIBRARY_PREFIX% -DMSC_USE_DLL=1 install    # [win]
+  number: 0
+  skip: True        # [win and vc<14]
+  script: {{ PYTHON }} -m pip install . -vvv
 
 requirements:
   build:
@@ -25,25 +22,35 @@ requirements:
     - patch  # [not win]
     - m2-patch  # [win]
   host:
+    - python
     - gmp           # [unix]
     - mpir          # [win]
     - mpfr
     - mpc
-    - python
+    - pip
+    - setuptools
+    - wheel
   run:
+    - python
     - mpir          # [win]
     - mpc
-    - python
 
 test:
   imports:
     - gmpy2
+  requires:
+    - pip
+  commands:
+    - pip check
 
 about:
   home: https://pypi.python.org/pypi/gmpy2
-  license: LGPL 3
+  license: LGPL-3.0-or-later
+  license_family: LGPL
   license_file: COPYING.LESSER
   summary: 'GMP/MPIR, MPFR, and MPC interface to Python 2.6+ and 3.x'
+  dev_url: https://github.com/aleaxit/gmpy
+  doc_url: https://gmpy2.readthedocs.io/en/latest/
 
 extra:
   recipe-maintainers:
