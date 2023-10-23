@@ -1,5 +1,5 @@
 {% set name = "gmpy2" %}
-{% set version = "2.1.2" %}
+{% set version = "2.1.5" %}
 
 package:
   name: {{ name|lower }}
@@ -7,14 +7,13 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/gmpy2-{{ version }}.tar.gz
-  sha256: da75140bca128ece795895477e53b43773e3748aa90ba6170eae7ca2c74b82d1
+  sha256: bc297f1fd8c377ae67a4f493fc0f926e5d1b157e5c342e30a4d84dc7b9f95d96
   patches:
     - win_setup.diff
 
 build:
   number: 0
-  skip: True        # [win and vc<14]
-  script: {{ PYTHON }} -m pip install . -vvv
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   build:
@@ -24,16 +23,18 @@ requirements:
   host:
     - python
     - gmp           # [unix]
-    - mpir          # [win]
-    - mpfr
-    - mpc
+    - mpir 3.0.0    # [win]
+    - mpfr 4.0.2
+    - mpc 1.1.0
     - pip
     - setuptools
     - wheel
   run:
     - python
-    - mpir          # [win]
+    - {{ pin_compatible('mpir') }} # [win]
+    # have run_exports
     - mpc
+    - mpfr
 
 test:
   imports:
@@ -42,18 +43,18 @@ test:
     - pip
   commands:
     - pip check
-  downstreams:
-  # Additional testing with a downstream package sympy
-    - sympy
+  # downstreams:
+  # # Additional testing with a downstream package sympy
+  #   - sympy
 
 about:
-  home: https://pypi.python.org/pypi/gmpy2
+  home: https://pypi.org/pypi/gmpy2
   license: LGPL-3.0-or-later
   license_family: LGPL
   license_file: COPYING.LESSER
   summary: 'GMP/MPIR, MPFR, and MPC interface to Python 2.6+ and 3.x'
   dev_url: https://github.com/aleaxit/gmpy
-  doc_url: https://gmpy2.readthedocs.io/en/latest/
+  doc_url: https://gmpy2.readthedocs.io
 
 extra:
   recipe-maintainers:
