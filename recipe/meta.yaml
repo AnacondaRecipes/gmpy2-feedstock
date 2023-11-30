@@ -10,9 +10,11 @@ source:
   sha256: bc297f1fd8c377ae67a4f493fc0f926e5d1b157e5c342e30a4d84dc7b9f95d96
   patches:
     - win_setup.diff
+    # 3.12 compatibility patch from https://github.com/aleaxit/gmpy/issues/446
+    - gmpy2-2.1.5-py3.12.patch # [py==312]
 
 build:
-  number: 0
+  number: 1
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
