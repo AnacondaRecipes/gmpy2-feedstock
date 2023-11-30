@@ -14,7 +14,7 @@ source:
     - gmpy2-2.1.5-py3.12.patch # [py==312]
 
 build:
-  number: 1
+  number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
