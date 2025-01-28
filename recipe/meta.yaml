@@ -1,5 +1,5 @@
 {% set name = "gmpy2" %}
-{% set version = "2.1.2" %}
+{% set version = "2.2.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,53 +7,59 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/gmpy2-{{ version }}.tar.gz
-  sha256: da75140bca128ece795895477e53b43773e3748aa90ba6170eae7ca2c74b82d1
-  patches:
-    - win_setup.diff
+  sha256: e83e07567441b78cb87544910cb3cc4fe94e7da987e93ef7622e76fb96650432
 
 build:
   number: 0
-  skip: True        # [win and vc<14]
-  script: {{ PYTHON }} -m pip install . -vvv
+  skip: True  # [py<37]
+  script: {{ PYTHON }} -m pip install -vvv --no-deps --no-build-isolation .
 
 requirements:
   build:
     - {{ compiler('c') }}
-    - patch  # [not win]
-    - m2-patch  # [win]
   host:
     - python
-    - gmp           # [unix]
-    - mpir          # [win]
-    - mpfr
-    - mpc
     - pip
     - setuptools
     - wheel
+    # C deps from https://github.com/aleaxit/gmpy/blob/v2.2.1/INSTALL#L10
+    - gmp >=5.0.0
+    - mpfr >=3.1.0
+    - mpc >=1.0.0
   run:
     - python
-    - mpir          # [win]
-    - mpc
 
 test:
   imports:
     - gmpy2
+    - gmpy2.gmpy2
   requires:
     - pip
+    - pytest
+    - hypothesis
+    - cython
+    - mpmath
+  source_files:
+    - test
   commands:
     - pip check
+    - pytest -v test
   downstreams:
-  # Additional testing with a downstream package sympy
+    # Additional testing with a downstream package sympy
     - sympy
 
 about:
-  home: https://pypi.python.org/pypi/gmpy2
+  home: https://pypi.org/pypi/gmpy2
   license: LGPL-3.0-or-later
   license_family: LGPL
   license_file: COPYING.LESSER
-  summary: 'GMP/MPIR, MPFR, and MPC interface to Python 2.6+ and 3.x'
+  summary: "gmpy2 interface to GMP, MPFR, and MPC for Python 3.7+"
+  description: gmpy2 is a C-coded Python extension module that supports multiple-precision arithmetic. It is the
+    successor to the original gmpy module (supported only the GMP library). gmpy2 adds support for the MPFR
+    (correctly rounded real floating-point arithmetic) and MPC (correctly rounded complex floating-point arithmetic)
+    libraries.
   dev_url: https://github.com/aleaxit/gmpy
-  doc_url: https://gmpy2.readthedocs.io/en/latest/
+  doc_url: https://gmpy2.readthedocs.io/
 
 extra:
   recipe-maintainers:
