@@ -1,31 +1,32 @@
 {% set name = "gmpy2" %}
-{% set version = "2.2.1" %}
+{% set version = "2.2.2" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/gmpy2-{{ version }}.tar.gz
-  sha256: e83e07567441b78cb87544910cb3cc4fe94e7da987e93ef7622e76fb96650432
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: d9b8c81e0f5e1a3cabf1ea8d154b29b5ef6e33b8f4e4c37b3da957b2dd6a3fa8
 
 build:
   number: 0
   skip: True  # [py<37]
-  script: {{ PYTHON }} -m pip install -vvv --no-deps --no-build-isolation .
+  script: {{ PYTHON }} -m pip install -vv --no-deps --no-build-isolation .
 
 requirements:
   build:
-    - {{ compiler('c') }}
+    - {{ stdlib('c') }}
+    - {{ compiler('cxx') }}
   host:
     - python
     - pip
-    - setuptools
+    - setuptools >=61
     - wheel
     # C deps from https://github.com/aleaxit/gmpy/blob/v2.2.1/INSTALL#L10
-    - gmp >=5.0.0
-    - mpfr >=3.1.0
-    - mpc >=1.0.0
+    - gmp {{ gmp }}
+    - mpfr {{ mpfr }}
+    - mpc {{ mpc }}
   run:
     - python
 
