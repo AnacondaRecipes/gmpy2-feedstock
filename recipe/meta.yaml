@@ -6,7 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/gmpy2-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: d9b8c81e0f5e1a3cabf1ea8d154b29b5ef6e33b8f4e4c37b3da957b2dd6a3fa8
 
 build:
@@ -16,12 +16,13 @@ build:
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
   host:
     - python
     - pip
     - setuptools >=61
-    # C deps from https://github.com/aleaxit/gmpy/blob/v2.2.1/INSTALL#L10
+    # C deps from https://github.com/aleaxit/gmpy/blob/v2.2.2/INSTALL#L10
     - gmp >=5.0.0
     - mpfr >=3.1.0
     - mpc >=1.0.0
@@ -42,6 +43,7 @@ test:
     - test
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
     - pytest -v test
   downstreams:
     # Additional testing with a downstream package sympy
@@ -59,7 +61,7 @@ about:
     - (correctly rounded real floating-point arithmetic) and MPC (correctly rounded complex floating-point arithmetic)
     - libraries.
   dev_url: https://github.com/aleaxit/gmpy
-  doc_url: https://gmpy2.readthedocs.io/
+  doc_url: https://gmpy2.readthedocs.io
 
 extra:
   recipe-maintainers:
