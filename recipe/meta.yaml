@@ -1,32 +1,33 @@
 {% set name = "gmpy2" %}
-{% set version = "2.2.2" %}
+{% set version = "2.3.1" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: d9b8c81e0f5e1a3cabf1ea8d154b29b5ef6e33b8f4e4c37b3da957b2dd6a3fa8
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 313f35e9fe6b9ddf72759b14dac25166fe5757c970403e4bbf87a70ab2be07df
 
 build:
   number: 0
-  skip: True  # [py<37]
+  skip: true  # [py<39]
   script: {{ PYTHON }} -m pip install -vv --no-deps --no-build-isolation .
 
 requirements:
   build:
     - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
+    - {{ compiler('c') }}
   host:
     - python
     - pip
-    - setuptools >=61
-    - wheel
+    - setuptools >=77,<80
     # C deps from https://github.com/aleaxit/gmpy/blob/v2.2.1/INSTALL#L10
     - gmp {{ gmp }}
     - mpfr {{ mpfr }}
     - mpc {{ mpc }}
+    - setuptools-scm >=6.0
   run:
     - python
 
@@ -54,7 +55,7 @@ about:
   license: LGPL-3.0-or-later
   license_family: LGPL
   license_file: COPYING.LESSER
-  summary: "gmpy2 interface to GMP, MPFR, and MPC for Python 3.7+"
+  summary: gmpy2 interface to GMP, MPFR, and MPC for Python 3.7+
   description: gmpy2 is a C-coded Python extension module that supports multiple-precision arithmetic. It is the
     successor to the original gmpy module (supported only the GMP library). gmpy2 adds support for the MPFR
     (correctly rounded real floating-point arithmetic) and MPC (correctly rounded complex floating-point arithmetic)
