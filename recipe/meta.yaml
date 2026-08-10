@@ -2,7 +2,7 @@
 {% set version = "2.3.1" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
@@ -45,7 +45,7 @@ test:
     - test
   commands:
     - pip check
-    - pytest -v test
+    - pytest -vv test
   downstreams:
     # Additional testing with a downstream package sympy
     - sympy
