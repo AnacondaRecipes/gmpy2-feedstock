@@ -22,7 +22,8 @@ requirements:
   host:
     - python
     - pip
-    - setuptools >=77,<80
+    # Upstream's <80 cap targets editable coverage builds (aleaxit/gmpy@34f6284); win-arm64 py3.15 has no setuptools <80.
+    - setuptools >=77
     # C deps from https://github.com/aleaxit/gmpy/blob/v2.2.1/INSTALL#L10
     - gmp {{ gmp }}
     - mpfr {{ mpfr }}
